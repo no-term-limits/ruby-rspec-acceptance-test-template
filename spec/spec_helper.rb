@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
+require 'pathname'
 RUBY_RSPEC_ACCEPTANCE_TEST_ROOT = File.expand_path('../../', Pathname.new(__FILE__).realpath)
 
 # initialize bundler
-require 'pathname'
 ENV['BUNDLE_GEMFILE'] ||= File.join(RUBY_RSPEC_ACCEPTANCE_TEST_ROOT, 'Gemfile')
 require 'rubygems'
 require 'bundler/setup'
