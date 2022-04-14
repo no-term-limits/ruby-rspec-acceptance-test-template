@@ -12,10 +12,12 @@ gem 'deepsort'
 gem 'factory_bot'
 gem 'httparty'
 gem 'json'
+gem 'matrix'
 gem 'mysql2'
 gem 'parallel_tests'
 gem 'phantomjs', require: 'phantomjs/poltergeist'
 gem 'poltergeist'
+gem 'psych'
 gem 'recursive-open-struct'
 gem 'rest-client'
 gem 'rspec'
@@ -30,10 +32,6 @@ gem 'terminal-table'
 gem 'rubocop', require: false
 gem 'rubocop-junit-formatter', require: false
 gem 'rubocop-rspec', require: false
-
-gem 'matrix'
-
-gem 'psych'
 
 group :development do
   gem 'byebug'
