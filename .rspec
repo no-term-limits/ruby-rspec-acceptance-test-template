@@ -1,0 +1,6 @@
+--require rspec_junit_formatter
+--format RspecJunitFormatter --out test-reports/junit.xml
+--format documentation
+--tty true
+--color true
+--order defined

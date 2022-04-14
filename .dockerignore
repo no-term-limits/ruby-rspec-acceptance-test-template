@@ -1,0 +1,10 @@
+/test-reports
+/node_modules
+/curls
+/.git
+.DS_Store
+.envrc
+.idea
+yarn-error.log
+yarn.lock
+*.iml

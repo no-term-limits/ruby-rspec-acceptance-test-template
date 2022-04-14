@@ -1,0 +1,7 @@
+api:
+  todos:
+    expected_response_hash:
+      userId: 1
+      id: 1
+      title: "delectus aut autem"
+      completed: false

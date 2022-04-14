@@ -1,0 +1,9 @@
+default_test_environment: default
+
+default: &default
+  capybara_driver: <%= ENV['CAPYBARA_DRIVER'] || 'headless_chrome' %>
+  test_target:
+    base_url: 'https://jsonplaceholder.typicode.com'
+
+test_env:
+  <<: *default
