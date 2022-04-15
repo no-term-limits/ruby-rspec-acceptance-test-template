@@ -19,19 +19,18 @@ set -e
 echo "removing any old test-reports dir on host"
 rm -rf test-reports
 echo "cleaning up old $CONTAINER_NAME container"
-(((docker ps -a | grep "$CONTAINER_NAME") && docker rm "$CONTAINER_NAME") || true)
+( ( docker ps -a | grep "$CONTAINER_NAME" ) && docker rm "$CONTAINER_NAME" ) || true
 echo "cleaned up old $CONTAINER_NAME container"
-echo "NOT ACTUALLY cleaning up old images. we'll let the cronjob on the bamboo agents do that so builds are faster."
 DOCKER_IMAGE="ghcr.io/ruby-rspec-acceptance-test-template:$IMAGE_TAG"
 docker build -t "$DOCKER_IMAGE" .
 
 set +e
 docker run \
-    --name "$CONTAINER_NAME" \
-    -e TEST_ENV="$TEST_ENV" \
-    -e LANG=C.UTF-8 \
-    "$DOCKER_IMAGE" \
-    $DOCKER_COMMAND
+  --name "$CONTAINER_NAME" \
+  -e TEST_ENV="$TEST_ENV" \
+  -e LANG=C.UTF-8 \
+  "$DOCKER_IMAGE" \
+  $DOCKER_COMMAND
 
 exitstatus=$?
 
