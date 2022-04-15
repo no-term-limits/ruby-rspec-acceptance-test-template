@@ -12,7 +12,7 @@ if [[ -z $DOCKER_COMMAND ]]; then
 fi
 echo "DOCKER_COMMAND: $DOCKER_COMMAND"
 
-CONTAINER_NAME=monolith_qa_ci_$(uuidgen | tr "[:upper:]" "[:lower:]")
+CONTAINER_NAME=ruby_rspec_acceptance_test_ci_$(uuidgen | tr "[:upper:]" "[:lower:]")
 IMAGE_TAG="$CONTAINER_NAME"
 
 set -e
