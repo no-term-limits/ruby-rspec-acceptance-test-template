@@ -7,4 +7,5 @@ function error_handler() {
 trap 'error_handler ${LINENO} $?' ERR
 set -o errtrace -o errexit -o nounset -o pipefail
 
-RUBY_RSPEC_ACCEPTANCE_TEST_CONSOLE=true bundle exec rspec vendor/for_console.rb
+bundle exec rubocop --format junit --display-only-failed --out test-reports/rubocop.xml
+bundle exec rspec --color --format progress --format RspecJunitFormatter -o test-reports/junit.xml

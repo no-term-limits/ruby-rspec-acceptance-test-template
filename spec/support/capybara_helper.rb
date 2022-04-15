@@ -5,8 +5,6 @@ require 'capybara/cuprite'
 require 'capybara/rspec'
 
 module CapybaraHelper
-  CAPYBARA_DRIVER = App::Config.capybara_driver.to_sym
-
   Capybara.register_driver :chrome do |app|
     Capybara::Selenium::Driver.new(app, browser: :chrome)
   end
@@ -43,6 +41,6 @@ module CapybaraHelper
     Capybara::Cuprite::Driver.new(app, browser_options: { 'no-sandbox': nil })
   end
 
-  Capybara.default_driver = CAPYBARA_DRIVER
-  Capybara.javascript_driver = CAPYBARA_DRIVER
+  Capybara.default_driver = App::Config.capybara_driver.to_sym
+  Capybara.javascript_driver = App::Config.capybara_driver.to_sym
 end

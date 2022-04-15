@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'pathname'
-RUBY_RSPEC_ACCEPTANCE_TEST_ROOT = File.expand_path('../../', Pathname.new(__FILE__).realpath)
+RUBY_RSPEC_ACCEPTANCE_TEST_ROOT = File.expand_path('../../', Pathname.new(__FILE__).realpath) unless defined? RUBY_RSPEC_ACCEPTANCE_TEST_ROOT
 
 # initialize bundler
 ENV['BUNDLE_GEMFILE'] ||= File.join(RUBY_RSPEC_ACCEPTANCE_TEST_ROOT, 'Gemfile')
@@ -14,16 +14,13 @@ require 'active_support/all'
 
 # require and include local modules every test depends on.
 # we might consider not including these methods in the global namespace
-require 'support/app'
-require 'support/app_helper'
-require 'support/rest_client_helper'
-require 'support/debug_logging_helper'
-require 'support/hash_extensions'
+# use "load" so we can reload later if necessary
+Dir.glob("#{RUBY_RSPEC_ACCEPTANCE_TEST_ROOT}/spec/support/*.rb").each { |helper| load helper }
 
 require 'status_api_acceptance_test_helper'
 
 require 'timeout'
-TEST_TIMEOUT_SECONDS = 180
+TEST_TIMEOUT_SECONDS = 180 unless defined? TEST_TIMEOUT_SECONDS
 
 class StatusFormatter
   RSpec::Core::Formatters.register self, :example_passed, :example_pending, :example_failed
@@ -57,9 +54,11 @@ RSpec.configure do |config|
     DebugLogging.clear_logs
   end
 
-  config.around(:each) do |example|
-    # if a test takes ridiculously long, consider it broken
-    Timeout.timeout(TEST_TIMEOUT_SECONDS) { example.run }
+  if ENV['RUBY_RSPEC_ACCEPTANCE_TEST_CONSOLE'] != 'true'
+    config.around(:each) do |example|
+      # if a test takes ridiculously long, consider it broken
+      Timeout.timeout(TEST_TIMEOUT_SECONDS) { example.run }
+    end
   end
 
   # rspec-expectations config goes here. You can use an alternate

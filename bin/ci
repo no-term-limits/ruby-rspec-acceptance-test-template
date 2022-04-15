@@ -8,7 +8,7 @@ trap 'error_handler ${LINENO} $?' ERR
 set -o errtrace -o errexit -o pipefail
 
 if [[ -z $DOCKER_COMMAND ]]; then
-  DOCKER_COMMAND='bundle exec rspec spec'
+  DOCKER_COMMAND='./bin/boot_ci'
 fi
 echo "DOCKER_COMMAND: $DOCKER_COMMAND"
 

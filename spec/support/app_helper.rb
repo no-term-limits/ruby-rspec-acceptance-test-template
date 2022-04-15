@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module AppHelper
+  def reload!
+    puts 'Reloading...'
+    load './spec/spec_helper.rb'
+  end
+
   def config
     App::Config
   end

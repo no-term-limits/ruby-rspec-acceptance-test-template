@@ -4,15 +4,18 @@ require 'yaml'
 
 class App
   class Config
-    CONFIG_FILE = File.join(RUBY_RSPEC_ACCEPTANCE_TEST_ROOT, 'config.yml')
+    @config = nil
+    @config_with_environment = nil
 
-    # rubocop:disable Style/IfUnlessModifier
-    unless defined?(CONFIG)
-      CONFIG = YAML.safe_load(ERB.new(File.read(CONFIG_FILE)).result, aliases: true)
-    end
-    # rubocop:enable Style/IfUnlessModifier
+    CONFIG_FILE = File.join(RUBY_RSPEC_ACCEPTANCE_TEST_ROOT, 'config.yml') unless defined? CONFIG_FILE
 
     class << self
+      def config
+        return @config if @config
+
+        @config = YAML.safe_load(ERB.new(File.read(CONFIG_FILE)).result, aliases: true)
+      end
+
       def get(key)
         env_config = config_with_environment[key.to_s]
         if env_config.is_a?(Hash)
@@ -37,33 +40,40 @@ class App
       private
 
       def config_with_environment
-        @config_with_environment ||= CONFIG.merge(environment_config)
+        @config_with_environment ||= config.merge(environment_config)
       end
 
       def environment_config
-        CONFIG[specified_environment] || raise("Cannot find the specified environment in #{CONFIG_FILE}: #{specified_environment.inspect}")
+        config[specified_environment] || raise("Cannot find the specified environment in #{CONFIG_FILE}: #{specified_environment.inspect}")
       end
 
       def specified_environment
         return ENV['TEST_ENV'] if ENV['TEST_ENV'].present?
-        return CONFIG['default_test_environment'] if CONFIG_FILE['default_test_environment'].present?
+        return config['default_test_environment'] if config['default_test_environment'].present?
+
         'default'
       end
     end
   end
 
   class Data
-    YAML_FILES = Dir.glob(File.join(RUBY_RSPEC_ACCEPTANCE_TEST_ROOT, 'data/**/*.yml'))
-    YAML_BLOB = YAML_FILES.map { |yaml_file| IO.read(yaml_file) }.join("\n")
-    DATA = (YAML_BLOB.blank? ? nil : YAML.load_stream(YAML_BLOB).last.deep_symbolize_keys) unless defined? DATA
+    @data = nil
 
     class << self
+      def data
+        return @data if @data
+
+        yaml_files = Dir.glob(File.join(RUBY_RSPEC_ACCEPTANCE_TEST_ROOT, 'data/**/*.yml'))
+        yaml_blob = yaml_files.map { |yaml_file| File.read(yaml_file) }.join("\n")
+        @data = (yaml_blob.blank? ? nil : YAML.load_stream(yaml_blob).last.deep_symbolize_keys)
+      end
+
       def get(key)
-        RecursiveOpenStruct.new(DATA[key.to_sym], recurse_over_arrays: true)
+        RecursiveOpenStruct.new(data[key.to_sym], recurse_over_arrays: true)
       end
 
       def method_missing(method, *args)
-        if DATA.key?(method.to_sym)
+        if data.key?(method.to_sym)
           get(method)
         else
           super
