@@ -1,3 +1,6 @@
+[![CI](https://github.com/no-term-limits/ruby-rspec-acceptance-test-template/actions/workflows/ci.yml/badge.svg)](https://github.com/no-term-limits/ruby-rspec-acceptance-test-template/actions/workflows/ci.yml)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+
 # ruby-rspec-acceptance-test-template
 
 This project is designed to be a jumping off point for testing webapps that you
