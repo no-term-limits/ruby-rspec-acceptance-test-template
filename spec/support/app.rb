@@ -41,11 +41,13 @@ class App
       end
 
       def environment_config
-        CONFIG[specified_environment] || raise("Cannot find the specified environment in #{CONFIG_FILE}: #{specified_environment}")
+        CONFIG[specified_environment] || raise("Cannot find the specified environment in #{CONFIG_FILE}: #{specified_environment.inspect}")
       end
 
       def specified_environment
-        ENV['TEST_ENV'] || CONFIG['default_test_environment'] || 'default'
+        return ENV['TEST_ENV'] if ENV['TEST_ENV'].present?
+        return CONFIG['default_test_environment'] if CONFIG_FILE['default_test_environment'].present?
+        'default'
       end
     end
   end
