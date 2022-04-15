@@ -1,5 +1,9 @@
 # ruby-rspec-acceptance-test-template
 
+This project is designed to be a jumping off point for testing webapps that you
+have deployed to some environment and are available via http. It has facilities
+for testing using api-based tests and browser-based tests.
+
 ## run
 
 `bundle exec rspec`
@@ -25,3 +29,7 @@ Data can be added to its own yaml file in the data directory and referenced like
 
 Tests can be added to the spec directory. See spec/api/todos_spec.rb as an
 example
+
+## Similar projects
+
+ * https://github.com/brooklynDev/airborne
